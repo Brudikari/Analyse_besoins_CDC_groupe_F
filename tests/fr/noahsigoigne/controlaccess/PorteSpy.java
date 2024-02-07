@@ -2,7 +2,7 @@ package fr.noahsigoigne.controlaccess;
 
 public class PorteSpy implements PorteInterface{
     private boolean ouvert;
-    public PorteSpy(LecteurFake lecteurFake) {
+    public PorteSpy() {
         this.ouvert = false;
     }
 
