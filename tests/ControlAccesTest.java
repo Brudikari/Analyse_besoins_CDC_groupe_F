@@ -1,3 +1,4 @@
+import fr.noahsigoigne.controlaccess.BadgeFake;
 import fr.noahsigoigne.controlaccess.MoteurOuverture;
 import org.junit.Test;
 //import org.junit.jupiter.api.test;
@@ -15,10 +16,11 @@ public class ControlAccesTest {
         //ETANT DONNE un lecteur relié à une porte
         PorteSpy porteSpy = new PorteSpy();
         LecteurFake lecteurFake = new LecteurFake(porteSpy);
+        BadgeFake badgeFake = new BadgeFake();
         MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
 
         //QUAND un badge est détecté
-        lecteurFake.simulerDetectionBadge();
+        lecteurFake.simulerDetectionBadge(badgeFake);
 
         //ET que ce lecteur est interrogé
         moteurOuverture.interrogerLecteur(lecteurFake);
@@ -33,10 +35,10 @@ public class ControlAccesTest {
         //ETANT DONNE un lecteur relié à une porte
         LecteurFake lecteurFake = new LecteurFake();
         PorteSpy porteSpy = new PorteSpy();
-        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
+        BadgeFake badgeFake = new BadgeFake();
 
         //QUAND un badge est détecté
-        lecteurFake.simulerDetectionBadge();
+        lecteurFake.simulerDetectionBadge(badgeFake);
 
         //ET que ce lecteur est interrogé
 
@@ -66,10 +68,11 @@ public class ControlAccesTest {
         PorteSpy porteSpy1 = new PorteSpy();
         PorteSpy porteSpy2 = new PorteSpy();
         LecteurFake lecteurFake = new LecteurFake(porteSpy1, porteSpy2);
+        BadgeFake badgeFake = new BadgeFake();
         MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy1, porteSpy2);
 
         //QUAND un badge est détecté
-        lecteurFake.simulerDetectionBadge();
+        lecteurFake.simulerDetectionBadge(badgeFake);
 
         //ET que ce lecteur est interrogé
         moteurOuverture.interrogerLecteur(lecteurFake);
@@ -85,10 +88,11 @@ public class ControlAccesTest {
         PorteSpy porteSpy = new PorteSpy();
         LecteurFake lecteurFake1 = new LecteurFake(porteSpy);
         LecteurFake lecteurFake2 = new LecteurFake(porteSpy);
+        BadgeFake badgeFake = new BadgeFake();
         MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
 
         //QUAND un badge est détecté
-        lecteurFake2.simulerDetectionBadge();
+        lecteurFake2.simulerDetectionBadge(badgeFake);
 
         //ET que ce lecteur est interrogé
         moteurOuverture.interrogerLecteur(lecteurFake1, lecteurFake2);
@@ -102,10 +106,11 @@ public class ControlAccesTest {
         PorteSpy porteSpy1 = new PorteSpy();
         PorteSpy porteSpy2 = new PorteSpy();
         LecteurFake lecteurFake1 = new LecteurFake(porteSpy1);
+        BadgeFake badgeFake = new BadgeFake();
         MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy1);
 
         //QUAND un badge passé dans le 2e lecteur
-        lecteurFake1.simulerDetectionBadge();
+        lecteurFake1.simulerDetectionBadge(badgeFake);
 
         //ET que ce lecteur est interrogé
         moteurOuverture.interrogerLecteur(lecteurFake1);
@@ -115,5 +120,72 @@ public class ControlAccesTest {
         assertFalse(porteSpy2.verifierOuvertureDemandee());
     }
 
-    //TODO cas bloqué
+    @Test
+    public void casBadgeNonValide() {
+        //ETANT DONNE un lecteur relié à une porte
+        PorteSpy porteSpy = new PorteSpy();
+        LecteurFake lecteurFake = new LecteurFake(porteSpy);
+        BadgeFake badgeFake = new BadgeFake(false);
+        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
+
+        //QUAND un badge non valide est détecté
+        lecteurFake.simulerDetectionBadge(badgeFake);
+
+        //ET que ce lecteur est interrogé
+        moteurOuverture.interrogerLecteur(lecteurFake);
+
+        //ALORS la porte n'est pas déverrouillée
+        assertFalse(porteSpy.verifierOuvertureDemandee());
+    }
+
+    @Test
+    public void casBadgeBloque() {
+        //ETANT DONNE un lecteur relié à une porte
+        PorteSpy porteSpy = new PorteSpy();
+        LecteurFake lecteurFake = new LecteurFake(porteSpy);
+        BadgeFake badgeFake = new BadgeFake();
+        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
+
+        //QUAND un badge est bloqué
+        badgeFake.bloquer();
+
+        //ET ce badge est détecté
+        lecteurFake.simulerDetectionBadge(badgeFake);
+
+        //ET que ce lecteur est interrogé
+        moteurOuverture.interrogerLecteur(lecteurFake);
+
+        //ALORS la porte n'est pas déverrouillée
+        assertFalse(porteSpy.verifierOuvertureDemandee());
+    }
+
+
+    @Test
+    public void casBadgeBloquePuisDebloque() {
+        //ETANT DONNE un lecteur relié à une porte
+        PorteSpy porteSpy = new PorteSpy();
+        LecteurFake lecteurFake = new LecteurFake(porteSpy);
+        BadgeFake badgeFake = new BadgeFake();
+        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
+
+        //QUAND un badge est bloqué
+        badgeFake.bloquer();
+
+        //QUAND un badge est ddébloqué
+        badgeFake.debloquer();
+
+        //ET ce badge est détecté
+        lecteurFake.simulerDetectionBadge(badgeFake);
+
+        //ET que ce lecteur est interrogé
+        moteurOuverture.interrogerLecteur(lecteurFake);
+
+        //ALORS la porte n'est pas déverrouillée
+        assertTrue(porteSpy.verifierOuvertureDemandee());
+    }
+
+    // Autorisé : 3 portes 2 lecteurs, lecteur 1 lié aux 2 premières portes, le 2e aux 2 dernières
+    // le badge est autorisé sur lecteur 1 mais pas le 2
+    //voir si la porte 2 est bien ouverte
+
 }
