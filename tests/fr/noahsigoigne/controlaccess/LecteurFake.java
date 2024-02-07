@@ -12,7 +12,7 @@ public class LecteurFake implements LecteurInterface {
 
     public void simulerDetectionBadge(BadgeInterface badge){
         aDetecteBadge = true;
-        if(badge.estValide() && !badge.estBloque()) {
+        if(!badge.estBloque()) {
             this.aDetecteBadgeCorrect = true;
         }
 
