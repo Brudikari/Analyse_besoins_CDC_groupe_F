@@ -1,4 +1,3 @@
-import fr.noahsigoigne.controlaccess.BadgeFake;
 import fr.noahsigoigne.controlaccess.MoteurOuverture;
 import org.junit.Test;
 //import org.junit.jupiter.api.test;
@@ -19,7 +18,7 @@ public class ControlAccesTest {
         BadgeFake badgeFake = new BadgeFake();
         MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
 
-        //QUAND un badge est détecté
+        //QUAND un badge est passé devant le lecteur
         lecteurFake.simulerDetectionBadge(badgeFake);
 
         //ET que ce lecteur est interrogé
@@ -40,9 +39,9 @@ public class ControlAccesTest {
         //QUAND un badge est détecté
         lecteurFake.simulerDetectionBadge(badgeFake);
 
-        //ET que ce lecteur est interrogé
+        //ET que ce lecteur n'est pas interrogé
 
-        //ALORS la porte est déverrouillée
+        //ALORS la porte n'est pas déverrouillée
         assertFalse(porteSpy.verifierOuvertureDemandee());
     }
 
@@ -84,35 +83,37 @@ public class ControlAccesTest {
 
     @Test
     public void CasPlusieursLecteurs() {
-        //ETANT DONNE plusieurs lecteurs une porte
+        //ETANT DONNE plusieurs lecteurs reliés à une porte
         PorteSpy porteSpy = new PorteSpy();
         LecteurFake lecteurFake1 = new LecteurFake(porteSpy);
         LecteurFake lecteurFake2 = new LecteurFake(porteSpy);
         BadgeFake badgeFake = new BadgeFake();
         MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
 
+        //QUAND un badge est passé devant le deuxième lecteur
+        lecteurFake2.simulerDetectionBadge();
         //QUAND un badge est détecté
         lecteurFake2.simulerDetectionBadge(badgeFake);
 
-        //ET que ce lecteur est interrogé
+        // ET que ces lecteurs sont interrogés
         moteurOuverture.interrogerLecteur(lecteurFake1, lecteurFake2);
 
-        //ALORS la porte est déverrouillée
+        // ALORS la porte est deverrouillée
         assertTrue(porteSpy.verifierOuvertureDemandee());
     }
     @Test
     public void casPlusieursLecteursPlusieursPortes() {
-        //ETANT DONNE un lecteur relié à deux porte
+        // ETANT DONNE plusieurs lecteurs reliés chacun à leur porte
         PorteSpy porteSpy1 = new PorteSpy();
         PorteSpy porteSpy2 = new PorteSpy();
         LecteurFake lecteurFake1 = new LecteurFake(porteSpy1);
         BadgeFake badgeFake = new BadgeFake();
         MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy1);
 
-        //QUAND un badge passé dans le 2e lecteur
+        // QUAND un badge est passé devant le deuxième lecteur
         lecteurFake1.simulerDetectionBadge(badgeFake);
 
-        //ET que ce lecteur est interrogé
+        // ET que ces lecteurs sont interrogés
         moteurOuverture.interrogerLecteur(lecteurFake1);
 
         //ALORS seule la 2e porte est déverrouillée
