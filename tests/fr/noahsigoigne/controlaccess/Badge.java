@@ -1,20 +1,10 @@
 package fr.noahsigoigne.controlaccess;
 
-public class BadgeFake implements BadgeInterface {
-    boolean valide;
+public class Badge implements BadgeInterface {
     boolean bloque = false;
 
-    public BadgeFake(boolean valide) {
-        this.valide = valide;
-    }
 
-    public BadgeFake() {
-        this.valide = true;
-    }
-
-    @Override
-    public boolean estValide() {
-        return valide;
+    public Badge() {
     }
 
     @Override
