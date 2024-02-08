@@ -1,8 +1,6 @@
 import org.junit.Test;
-//import org.junit.jupiter.api.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-//import static org.junit.jupiter.Assert.assertTrue;
 
 import fr.noahsigoigne.controlaccess.LecteurFake;
 import fr.noahsigoigne.controlaccess.PorteSpy;
@@ -28,7 +26,6 @@ public class ControlAccesTest {
         //ALORS la porte est déverrouillée
         assertTrue(porteSpy.verifierOuvertureDemandee());
     }
-
 
     @Test
     public void CasSansInterrogation() {
@@ -102,6 +99,7 @@ public class ControlAccesTest {
         // ALORS la porte est deverrouillée
         assertTrue(porteSpy.verifierOuvertureDemandee());
     }
+
     @Test
     public void casPlusieursLecteursPlusieursPortes() {
         // ETANT DONNE plusieurs lecteurs reliés chacun à leur porte
@@ -143,7 +141,6 @@ public class ControlAccesTest {
         assertFalse(porteSpy.verifierOuvertureDemandee());
     }
 
-
     @Test
     public void casBadgeBloquePuisDebloque() {
         //ETANT DONNE un lecteur relié à une porte
@@ -164,16 +161,17 @@ public class ControlAccesTest {
         //ET que ce lecteur est interrogé
         moteurOuverture.interrogerLecteur(lecteur);
 
-        //ALORS la porte n'est pas déverrouillée
+        //ALORS la porte est déverrouillée
         assertTrue(porteSpy.verifierOuvertureDemandee());
     }
-
-    // Autorisé : 3 portes 2 lecteurs, lecteur 1 lié aux 2 premières portes, le 2e aux 2 dernières
-    // le badge est autorisé sur lecteur 1 mais pas le 2
-    //voir si la porte 2 est bien ouverte
 
     //Log
     //Output dans un string
     //Quand ouverture valide, mettre dans un journal que ce lecteur a vu passer ce badge
     //{Horodatage} : {badge} sur {lecteur} - OK / KO
+
+    // 2024-02-08_09-59-10 : badge_01 sur lecteur_01 - OK \n
+    //Tests -> OK, KO
+
+    //TODO tester contraindre le nom du badge
 }
