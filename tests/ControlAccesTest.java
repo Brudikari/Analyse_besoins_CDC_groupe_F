@@ -1,13 +1,10 @@
+import fr.noahsigoigne.controlaccess.*;
 import org.junit.Test;
 //import org.junit.jupiter.api.test;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+
 //import static org.junit.jupiter.Assert.assertTrue;
 
-import fr.noahsigoigne.controlaccess.LecteurFake;
-import fr.noahsigoigne.controlaccess.PorteSpy;
-import fr.noahsigoigne.controlaccess.Badge;
-import fr.noahsigoigne.controlaccess.MoteurOuverture;
 
 public class ControlAccesTest {
 
@@ -168,6 +165,46 @@ public class ControlAccesTest {
         assertTrue(porteSpy.verifierOuvertureDemandee());
     }
 
+    @Test
+    public void casLogsKO() {
+        //ETANT DONNE un lecteur relié à une porte
+        PorteSpy porteSpy = new PorteSpy();
+        LecteurFake lecteur = new LecteurFake("lecteur_01", porteSpy);
+        Badge badge = new Badge("badge_01");
+        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
+        LogSpy logSpy = new LogSpy();
+        //QUAND un badge est bloqué
+        badge.bloquer();
+
+        //ET ce badge est détecté puis logger
+       logSpy.getLogInfos(lecteur.simulerDetectionBadge(badge));
+
+        //ET que ce lecteur est interrogé
+        moteurOuverture.interrogerLecteur(lecteur);
+
+        //ALORS le log à récupéré les bonnes informations
+        String Prevision = logSpy.getTime() + " : " + badge.getNom() + " sur " + lecteur.getNom() + " - KO\n";
+        assertEquals(logSpy.getStockage(), Prevision);
+    }
+    @Test
+    public void casLogsOK() {
+        //ETANT DONNE un lecteur relié à une porte
+        PorteSpy porteSpy = new PorteSpy();
+        LecteurFake lecteur = new LecteurFake("lecteur_01", porteSpy);
+        Badge badge = new Badge("badge_01");
+        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
+        LogSpy logSpy = new LogSpy();
+
+        //QUAND ce badge est détecté puis logger
+        logSpy.getLogInfos(lecteur.simulerDetectionBadge(badge));
+
+        //ET que ce lecteur est interrogé
+        moteurOuverture.interrogerLecteur(lecteur);
+
+        //ALORS le log à récupéré les bonnes informations
+        String Prevision = logSpy.getTime() + " : " + badge.getNom() + " sur " + lecteur.getNom() + " - OK\n";
+        assertEquals(logSpy.getStockage(), Prevision);
+    }
     // Autorisé : 3 portes 2 lecteurs, lecteur 1 lié aux 2 premières portes, le 2e aux 2 dernières
     // le badge est autorisé sur lecteur 1 mais pas le 2
     //voir si la porte 2 est bien ouverte
