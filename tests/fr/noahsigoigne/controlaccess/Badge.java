@@ -1,10 +1,14 @@
 package fr.noahsigoigne.controlaccess;
 
 public class Badge implements BadgeInterface {
-    boolean bloque = false;
+    private boolean bloque = false;
 
+    private String nom;
 
     public Badge() {
+    }
+    public Badge(String nomDuBadge) {
+        this.nom = nomDuBadge;
     }
 
     @Override
@@ -21,4 +25,8 @@ public class Badge implements BadgeInterface {
     public boolean estBloque() {
         return bloque;
     }
+    public String getNom() {
+        return nom;
+    }
+
 }
