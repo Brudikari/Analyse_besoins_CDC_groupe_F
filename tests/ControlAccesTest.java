@@ -18,7 +18,7 @@ public class ControlAccesTest {
         PorteSpy porteSpy = new PorteSpy();
         LecteurFake lecteur = new LecteurFake(porteSpy);
         Badge badge = new Badge();
-        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
+        MoteurOuverture moteurOuverture = new MoteurOuverture();
 
         //QUAND un badge est passé devant le lecteur
         lecteur.simulerDetectionBadge(badge);
@@ -51,7 +51,7 @@ public class ControlAccesTest {
         //ETANT DONNE un lecteur relié à une porte
         LecteurFake lecteur = new LecteurFake();
         PorteSpy porteSpy = new PorteSpy();
-        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
+        MoteurOuverture moteurOuverture = new MoteurOuverture();
 
         //QUAND aucun badge n'est détecté
 
@@ -69,7 +69,7 @@ public class ControlAccesTest {
         PorteSpy porteSpy2 = new PorteSpy();
         LecteurFake lecteur = new LecteurFake(porteSpy1, porteSpy2);
         Badge badge = new Badge();
-        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy1, porteSpy2);
+        MoteurOuverture moteurOuverture = new MoteurOuverture();
 
         //QUAND un badge est détecté
         lecteur.simulerDetectionBadge(badge);
@@ -89,7 +89,7 @@ public class ControlAccesTest {
         LecteurFake lecteur1 = new LecteurFake(porteSpy);
         LecteurFake lecteur2 = new LecteurFake(porteSpy);
         Badge badge = new Badge();
-        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
+        MoteurOuverture moteurOuverture = new MoteurOuverture();
 
         //QUAND un badge est passé devant le deuxième lecteur
         lecteur2.simulerDetectionBadge(badge);
@@ -110,7 +110,7 @@ public class ControlAccesTest {
         PorteSpy porteSpy2 = new PorteSpy();
         LecteurFake lecteur1 = new LecteurFake(porteSpy1);
         Badge badge = new Badge();
-        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy1);
+        MoteurOuverture moteurOuverture = new MoteurOuverture();
 
         // QUAND un badge est passé devant le deuxième lecteur
         lecteur1.simulerDetectionBadge(badge);
@@ -128,8 +128,8 @@ public class ControlAccesTest {
         //ETANT DONNE un lecteur relié à une porte
         PorteSpy porteSpy = new PorteSpy();
         LecteurFake lecteur = new LecteurFake(porteSpy);
-        Badge badge = new Badge(); //TODO supprimer  de badge
-        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
+        Badge badge = new Badge();
+        MoteurOuverture moteurOuverture = new MoteurOuverture();
 
         //QUAND un badge est bloqué
         badge.bloquer();
@@ -150,7 +150,7 @@ public class ControlAccesTest {
         PorteSpy porteSpy = new PorteSpy();
         LecteurFake lecteur = new LecteurFake(porteSpy);
         Badge badge = new Badge();
-        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
+        MoteurOuverture moteurOuverture = new MoteurOuverture();
 
         //QUAND un badge est bloqué
         badge.bloquer();
@@ -174,7 +174,7 @@ public class ControlAccesTest {
         PorteSpy porteSpy = new PorteSpy();
         LecteurFake lecteur = new LecteurFake("lecteur_01", porteSpy);
         Badge badge = new Badge("badge_01");
-        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
+        MoteurOuverture moteurOuverture = new MoteurOuverture();
         LogSpy logSpy = new LogSpy();
         //QUAND un badge est bloqué
         badge.bloquer();
@@ -195,7 +195,7 @@ public class ControlAccesTest {
         PorteSpy porteSpy = new PorteSpy();
         LecteurFake lecteur = new LecteurFake("lecteur_01", porteSpy);
         Badge badge = new Badge("badge_01");
-        MoteurOuverture moteurOuverture = new MoteurOuverture(porteSpy);
+        MoteurOuverture moteurOuverture = new MoteurOuverture();
         LogSpy logSpy = new LogSpy();
 
         //QUAND ce badge est détecté puis logger

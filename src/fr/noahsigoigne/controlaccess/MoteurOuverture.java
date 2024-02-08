@@ -2,10 +2,8 @@ package fr.noahsigoigne.controlaccess;
 
 public class MoteurOuverture {
 
-    private final PorteInterface[] portes;
 
-    public MoteurOuverture(PorteInterface... portes) {
-        this.portes = portes;
+    public MoteurOuverture() {
     }
     public void interrogerLecteur(LecteurInterface... lecteurs) {
         for(LecteurInterface lecteur : lecteurs ) {
