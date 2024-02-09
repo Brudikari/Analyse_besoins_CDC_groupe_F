@@ -218,5 +218,6 @@ public class ControlAccesTest {
     // 2024-02-08_09-59-10 : badge_01 sur lecteur_01 - OK \n
     //Tests -> OK, KO
 
-    //TODO tester contraindre le nom du badge
+    //TODO Tester si aucune infos dans le log
+    //TODO Tester si plusieurs infos dans le log
 }
