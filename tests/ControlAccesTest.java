@@ -199,7 +199,7 @@ public class ControlAccesTest {
         LogSpy logSpy = new LogSpy();
         MoteurOuverture moteurOuverture = new MoteurOuverture(logSpy);
 
-        //QUAND ce badge est détecté puis logger
+        //QUAND un badge est détecté
         lecteur.simulerDetectionBadge(badge);
 
         //ET que ce lecteur est interrogé
@@ -209,7 +209,34 @@ public class ControlAccesTest {
         String Prevision = logSpy.getTime() + " : " + badge.getNom() + " sur " + lecteur.getNom() + " - OK\n";
         assertEquals(logSpy.getStockage(), Prevision);
     }
+    @Test
+    public void casPlusieursLogs() {
+        //ETANT DONNE deux lecteurs relié à une porte
+        PorteSpy porteSpy = new PorteSpy();
+        LecteurFake lecteur01 = new LecteurFake("lecteur_01", porteSpy);
+        LecteurFake lecteur02 = new LecteurFake("lecteur_02", porteSpy);
+        Badge badge01 = new Badge("badge_01");
+        Badge badge02 = new Badge("badge_02");
+        LogSpy logSpy = new LogSpy();
+        MoteurOuverture moteurOuverture = new MoteurOuverture(logSpy);
 
+        //QUAND un premier badge est détecté par un premier lecteur
+        lecteur01.simulerDetectionBadge(badge01);
+
+        //ET que ce lecteur est interrogé
+        moteurOuverture.interrogerLecteur(lecteur01);
+
+        //ET un nouveau badge est détecté par un second lecteur
+        lecteur02.simulerDetectionBadge(badge02);
+
+        //ET que ce lecteur est interrogé
+        moteurOuverture.interrogerLecteur(lecteur02);
+
+        //ALORS le log à récupéré les infos des 2 tentatives d'entrée
+        String Prevision = logSpy.getTime() + " : " + badge01.getNom() + " sur " + lecteur01.getNom() + " - OK\n"
+                + logSpy.getTime() + " : " + badge02.getNom() + " sur " + lecteur02.getNom() + " - OK\n";
+        assertEquals(logSpy.getStockage(), Prevision);
+    }
     //Log
     //Output dans un string
     //Quand ouverture valide, mettre dans un journal que ce lecteur a vu passer ce badge
