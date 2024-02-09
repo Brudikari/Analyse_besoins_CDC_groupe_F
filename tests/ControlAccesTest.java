@@ -47,7 +47,7 @@ public class ControlAccesTest {
     }
 
     @Test
-    public void CasSansDétection() {
+    public void CasSansDetection() {
         //ETANT DONNE un lecteur relié à une porte
         LecteurFake lecteur = new LecteurFake();
         PorteSpy porteSpy = new PorteSpy();
@@ -174,13 +174,14 @@ public class ControlAccesTest {
         PorteSpy porteSpy = new PorteSpy();
         LecteurFake lecteur = new LecteurFake("lecteur_01", porteSpy);
         Badge badge = new Badge("badge_01");
-        MoteurOuverture moteurOuverture = new MoteurOuverture();
         LogSpy logSpy = new LogSpy();
+        MoteurOuverture moteurOuverture = new MoteurOuverture(logSpy);
+
         //QUAND un badge est bloqué
         badge.bloquer();
 
         //ET ce badge est détecté puis logger
-       logSpy.getLogInfos(lecteur.simulerDetectionBadge(badge));
+        lecteur.simulerDetectionBadge(badge);
 
         //ET que ce lecteur est interrogé
         moteurOuverture.interrogerLecteur(lecteur);
@@ -195,11 +196,11 @@ public class ControlAccesTest {
         PorteSpy porteSpy = new PorteSpy();
         LecteurFake lecteur = new LecteurFake("lecteur_01", porteSpy);
         Badge badge = new Badge("badge_01");
-        MoteurOuverture moteurOuverture = new MoteurOuverture();
         LogSpy logSpy = new LogSpy();
+        MoteurOuverture moteurOuverture = new MoteurOuverture(logSpy);
 
         //QUAND ce badge est détecté puis logger
-        logSpy.getLogInfos(lecteur.simulerDetectionBadge(badge));
+        lecteur.simulerDetectionBadge(badge);
 
         //ET que ce lecteur est interrogé
         moteurOuverture.interrogerLecteur(lecteur);

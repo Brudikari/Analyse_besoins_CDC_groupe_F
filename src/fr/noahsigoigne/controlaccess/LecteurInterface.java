@@ -7,4 +7,7 @@ public interface LecteurInterface {
     boolean aDetecteBadgeCorrect();
 
     PorteInterface[] getPortes();
+
+    String getNom();
+    BadgeInterface getBadge();
 }

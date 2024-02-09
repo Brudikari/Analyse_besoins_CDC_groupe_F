@@ -6,6 +6,7 @@ public class LecteurFake implements LecteurInterface {
     private PorteInterface[] portes;
     private boolean aDetecteBadge;
     private boolean aDetecteBadgeCorrect;
+    private BadgeInterface badge;
 
     public LecteurFake(PorteInterface... portes) {
         this.portes = portes;
@@ -15,13 +16,12 @@ public class LecteurFake implements LecteurInterface {
         this.nom = nomDuLecteur;
         this.portes = portes;
     }
-    public String simulerDetectionBadge(BadgeInterface badge){
+    public void simulerDetectionBadge(BadgeInterface badge){
         aDetecteBadge = true;
+        this.badge = badge;
         if(!badge.estBloque()) {
             this.aDetecteBadgeCorrect = true;
-            return badge.getNom() + " " + this.nom + " OK";
         }
-        return badge.getNom() + " " + this.nom + " KO";
     }
 
     public boolean aDetecteBadge() {
@@ -38,5 +38,7 @@ public class LecteurFake implements LecteurInterface {
     public String getNom() {
         return nom;
     }
-
+    public BadgeInterface getBadge() {
+        return badge;
+    }
 }

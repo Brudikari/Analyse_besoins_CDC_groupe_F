@@ -2,9 +2,7 @@ package fr.noahsigoigne.controlaccess;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-public class LogSpy {
-
-
+public class LogSpy implements LogInterface {
 
     private String stockage;
     public LogSpy(){
@@ -24,8 +22,6 @@ public class LogSpy {
         String nomLecteur = infos.split(" ")[1];
         String statut = infos.split(" ")[2];
         stockage += getTime() + " : " + nomBadge + " sur " + nomLecteur + " - " + statut + "\n";
-
-
     }
     public String getStockage() {
         return stockage;
