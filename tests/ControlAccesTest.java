@@ -23,7 +23,7 @@ public class ControlAccesTest {
         //QUAND un badge est passé devant le lecteur
         lecteur.simulerDetectionBadge(badge);
 
-        //ET que ce lecteur est interrogé
+        //ET que le lecteur est interrogé
         moteurOuverture.interrogerLecteur(lecteur);
 
         //ALORS la porte est déverrouillée
@@ -40,7 +40,7 @@ public class ControlAccesTest {
         //QUAND un badge est détecté
         lecteur.simulerDetectionBadge(badge);
 
-        //ET que ce lecteur n'est pas interrogé
+        //ET que le lecteur n'est pas interrogé
 
         //ALORS la porte n'est pas déverrouillée
         assertFalse(porteSpy.verifierOuvertureDemandee());
@@ -55,7 +55,7 @@ public class ControlAccesTest {
 
         //QUAND aucun badge n'est détecté
 
-        //ET que ce lecteur est interrogé
+        //ET que le lecteur est interrogé
         moteurOuverture.interrogerLecteur(lecteur);
 
         //ALORS la porte n'est pas déverrouillée
@@ -74,7 +74,7 @@ public class ControlAccesTest {
         //QUAND un badge est détecté
         lecteur.simulerDetectionBadge(badge);
 
-        //ET que ce lecteur est interrogé
+        //ET que le lecteur est interrogé
         moteurOuverture.interrogerLecteur(lecteur);
 
         //ALORS les portes sont déverrouillées
@@ -91,12 +91,11 @@ public class ControlAccesTest {
         Badge badge = new Badge();
         MoteurOuverture moteurOuverture = new MoteurOuverture();
 
-        //QUAND un badge est passé devant le deuxième lecteur
-        lecteur2.simulerDetectionBadge(badge);
-        //QUAND un badge est détecté
+        //QUAND un badge est passé devant chaque lecteur
+        lecteur1.simulerDetectionBadge(badge);
         lecteur2.simulerDetectionBadge(badge);
 
-        // ET que ces lecteurs sont interrogés
+        // ET que les lecteurs sont interrogés
         moteurOuverture.interrogerLecteur(lecteur1, lecteur2);
 
         // ALORS la porte est deverrouillée
@@ -109,18 +108,19 @@ public class ControlAccesTest {
         PorteSpy porteSpy1 = new PorteSpy();
         PorteSpy porteSpy2 = new PorteSpy();
         LecteurFake lecteur1 = new LecteurFake(porteSpy1);
+        LecteurFake lecteur2 = new LecteurFake(porteSpy2);
         Badge badge = new Badge();
         MoteurOuverture moteurOuverture = new MoteurOuverture();
 
         // QUAND un badge est passé devant le deuxième lecteur
-        lecteur1.simulerDetectionBadge(badge);
+        lecteur2.simulerDetectionBadge(badge);
 
-        // ET que ces lecteurs sont interrogés
-        moteurOuverture.interrogerLecteur(lecteur1);
+        // ET que les lecteurs sont interrogés
+        moteurOuverture.interrogerLecteur(lecteur1, lecteur2);
 
         //ALORS seule la 2e porte est déverrouillée
-        assertTrue(porteSpy1.verifierOuvertureDemandee());
-        assertFalse(porteSpy2.verifierOuvertureDemandee());
+        assertFalse(porteSpy1.verifierOuvertureDemandee());
+        assertTrue(porteSpy2.verifierOuvertureDemandee());
     }
 
     @Test
@@ -137,7 +137,7 @@ public class ControlAccesTest {
         //ET ce badge est détecté
         lecteur.simulerDetectionBadge(badge);
 
-        //ET que ce lecteur est interrogé
+        //ET que le lecteur est interrogé
         moteurOuverture.interrogerLecteur(lecteur);
 
         //ALORS la porte n'est pas déverrouillée
@@ -155,13 +155,13 @@ public class ControlAccesTest {
         //QUAND un badge est bloqué
         badge.bloquer();
 
-        //QUAND un badge est ddébloqué
+        //QUAND un badge est débloqué
         badge.debloquer();
 
         //ET ce badge est détecté
         lecteur.simulerDetectionBadge(badge);
 
-        //ET que ce lecteur est interrogé
+        //ET que le lecteur est interrogé
         moteurOuverture.interrogerLecteur(lecteur);
 
         //ALORS la porte est déverrouillée
@@ -180,13 +180,13 @@ public class ControlAccesTest {
         //QUAND un badge est bloqué
         badge.bloquer();
 
-        //ET ce badge est détecté puis logger
+        //ET le badge est détecté
         lecteur.simulerDetectionBadge(badge);
 
-        //ET que ce lecteur est interrogé
+        //ET que le lecteur est interrogé
         moteurOuverture.interrogerLecteur(lecteur);
 
-        //ALORS le log à récupéré les bonnes informations
+        //ALORS le log a récupéré les bonnes informations
         String Prevision = logSpy.getTime() + " : " + badge.getNom() + " sur " + lecteur.getNom() + " - KO\n";
         assertEquals(logSpy.getStockage(), Prevision);
     }
@@ -199,13 +199,13 @@ public class ControlAccesTest {
         LogSpy logSpy = new LogSpy();
         MoteurOuverture moteurOuverture = new MoteurOuverture(logSpy);
 
-        //QUAND ce badge est détecté puis logger
+        //QUAND le badge est détecté
         lecteur.simulerDetectionBadge(badge);
 
-        //ET que ce lecteur est interrogé
+        //ET que le lecteur est interrogé
         moteurOuverture.interrogerLecteur(lecteur);
 
-        //ALORS le log à récupéré les bonnes informations
+        //ALORS le log a récupéré les bonnes informations
         String Prevision = logSpy.getTime() + " : " + badge.getNom() + " sur " + lecteur.getNom() + " - OK\n";
         assertEquals(logSpy.getStockage(), Prevision);
     }
