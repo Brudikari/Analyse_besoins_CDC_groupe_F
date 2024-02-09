@@ -16,8 +16,6 @@ public class LogSpy implements LogInterface {
         return timeStamp;
     }
     public void getLogInfos(String infos) {
-        // badge.getNom() + " " + this.nom +
-        // " KO"; {Horodatage} : {badge} sur {lecteur} - OK / KO
         String nomBadge = infos.split(" ")[0];
         String nomLecteur = infos.split(" ")[1];
         String statut = infos.split(" ")[2];

@@ -10,11 +10,13 @@ public class LecteurFake implements LecteurInterface {
 
     public LecteurFake(PorteInterface... portes) {
         this.portes = portes;
+        this.badge = new NullBadge();
     }
 
     public LecteurFake(String nomDuLecteur, PorteInterface... portes) {
         this.nom = nomDuLecteur;
         this.portes = portes;
+        this.badge = new NullBadge();
     }
     public void simulerDetectionBadge(BadgeInterface badge){
         aDetecteBadge = true;

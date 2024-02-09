@@ -4,7 +4,9 @@ public class MoteurOuverture {
     LogInterface log;
 
     public MoteurOuverture() {
+        this.log = new NullLog();
     }
+
     public MoteurOuverture(LogInterface log) {
         this.log = log;
     }
@@ -15,11 +17,9 @@ public class MoteurOuverture {
                 for (PorteInterface porte : lecteur.getPortes()) {
                     porte.ouvrir();
                 }
-                if(log!=null) //TODO nullLogInterface -> NullObject
-                    log.getLogInfos(lecteur.getBadge().getNom() + " " + lecteur.getNom() + " OK");
+                log.getLogInfos(lecteur.getBadge().getNom() + " " + lecteur.getNom() + " OK");
             } else {
-                if(log!=null)
-                    log.getLogInfos(lecteur.getBadge().getNom() + " " + lecteur.getNom() + " KO");
+                log.getLogInfos(lecteur.getBadge().getNom() + " " + lecteur.getNom() + " KO");
             }
         }
     }
