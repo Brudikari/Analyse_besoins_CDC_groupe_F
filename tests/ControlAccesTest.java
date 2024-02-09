@@ -219,5 +219,22 @@ public class ControlAccesTest {
     //Tests -> OK, KO
 
     //TODO Tester si aucune infos dans le log
+
+    @Test
+    public void casAucuneInfoDansleLog() {
+        //ETANT DONNE un lecteur relié à une porte
+        PorteSpy porteSpy = new PorteSpy();
+        LecteurFake lecteur = new LecteurFake("lecteur_01", porteSpy);
+        LogSpy logSpy = new LogSpy();
+        MoteurOuverture moteurOuverture = new MoteurOuverture();
+
+        //QUAND le lecteur est interrogé
+        moteurOuverture.interrogerLecteur(lecteur);
+
+        //ALORS le log ne récupère aucune info
+        String Prevision = "";
+        assertEquals(logSpy.getStockage(), Prevision);
+    }
+
     //TODO Tester si plusieurs infos dans le log
 }
