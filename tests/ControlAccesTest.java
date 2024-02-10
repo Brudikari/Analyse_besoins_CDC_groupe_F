@@ -1,14 +1,9 @@
+import fr.noahsigoigne.controlaccess.*;
 import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
-
-import fr.noahsigoigne.controlaccess.LecteurFake;
-import fr.noahsigoigne.controlaccess.PorteSpy;
-import fr.noahsigoigne.controlaccess.Badge;
-import fr.noahsigoigne.controlaccess.MoteurOuverture;
-import fr.noahsigoigne.controlaccess.LogSpy;
 
 public class ControlAccesTest {
 
@@ -168,6 +163,11 @@ public class ControlAccesTest {
         assertTrue(porteSpy.verifierOuvertureDemandee());
     }
 
+    //Log
+    //Quand ouverture valide, mettre dans un journal que ce lecteur a vu passer ce badge
+    //{Horodatage} : {badge} sur {lecteur} - OK / KO
+    // Exemple : 2024-02-08_09-59-10 : badge_01 sur lecteur_01 - OK \n
+
     @Test
     public void casLogsKO() {
         //ETANT DONNE un lecteur relié à une porte
@@ -187,9 +187,10 @@ public class ControlAccesTest {
         moteurOuverture.interrogerLecteur(lecteur);
 
         //ALORS le log a récupéré les bonnes informations
-        String Prevision = logSpy.getTime() + " : " + badge.getNom() + " sur " + lecteur.getNom() + " - KO\n";
-        assertEquals(logSpy.getStockage(), Prevision);
+        String Prevision = "[WARN] " + logSpy.getTime() + " : " + badge.getNom() + " sur " + lecteur.getNom() + " - KO\n";
+        assertEquals(Prevision, logSpy.getStockage());
     }
+
     @Test
     public void casLogsOK() {
         //ETANT DONNE un lecteur relié à une porte
@@ -206,8 +207,8 @@ public class ControlAccesTest {
         moteurOuverture.interrogerLecteur(lecteur);
 
         //ALORS le log a récupéré les bonnes informations
-        String Prevision = logSpy.getTime() + " : " + badge.getNom() + " sur " + lecteur.getNom() + " - OK\n";
-        assertEquals(logSpy.getStockage(), Prevision);
+        String Prevision = "[INFO] " + logSpy.getTime() + " : " + badge.getNom() + " sur " + lecteur.getNom() + " - OK\n";
+        assertEquals(Prevision, logSpy.getStockage());
     }
     @Test
     public void casPlusieursLogs() {
@@ -233,17 +234,10 @@ public class ControlAccesTest {
         moteurOuverture.interrogerLecteur(lecteur02);
 
         //ALORS le log à récupéré les infos des 2 tentatives d'entrée
-        String Prevision = logSpy.getTime() + " : " + badge01.getNom() + " sur " + lecteur01.getNom() + " - OK\n"
-                + logSpy.getTime() + " : " + badge02.getNom() + " sur " + lecteur02.getNom() + " - OK\n";
-        assertEquals(logSpy.getStockage(), Prevision);
+        String Prevision = "[INFO] " + logSpy.getTime() + " : " + badge01.getNom() + " sur " + lecteur01.getNom() + " - OK\n"
+                + "[INFO] " + logSpy.getTime() + " : " + badge02.getNom() + " sur " + lecteur02.getNom() + " - OK\n";
+        assertEquals(Prevision, logSpy.getStockage());
     }
-    //Log
-    //Output dans un string
-    //Quand ouverture valide, mettre dans un journal que ce lecteur a vu passer ce badge
-    //{Horodatage} : {badge} sur {lecteur} - OK / KO
-
-    // 2024-02-08_09-59-10 : badge_01 sur lecteur_01 - OK \n
-    //Tests -> OK, KO
 
     @Test
     public void casAucuneInfoDansleLog() {
@@ -258,6 +252,79 @@ public class ControlAccesTest {
 
         //ALORS le log ne récupère aucune info
         String Prevision = "";
-        assertEquals(logSpy.getStockage(), Prevision);
+        assertEquals(Prevision, logSpy.getStockage());
     }
+
+    @Test
+    public void casLogLancementMoteur() {
+        //ETANT DONNE un moteur
+        LogSpy logSpy = new LogSpy();
+        MoteurOuverture moteurOuverture = new MoteurOuverture("moteur_01",logSpy);
+
+        //ALORS le log a récupéré les bonnes informations
+        String Prevision = "[INFO] " +  logSpy.getTime() + " : moteur " + moteurOuverture.getNom() + " démarré\n";
+        assertEquals(Prevision, logSpy.getStockage());
+    }
+
+    @Test
+    public void casLogLevelInfo() {
+        //ETANT DONNE un moteur
+        LogSpy logSpy = new LogSpy(LogInterface.INFO);
+        logSpy.log(LogInterface.INFO, "test");
+        logSpy.log(LogInterface.WARN, "test");
+        logSpy.log(LogInterface.ERROR, "test");
+
+        //ALORS le log a récupéré les bonnes informations
+        String Prevision =
+                  "[INFO] " +  logSpy.getTime() + " : test\n"
+                + "[WARN] " +  logSpy.getTime() + " : test\n"
+                + "[ERROR] " +  logSpy.getTime() + " : test\n";
+        assertEquals(Prevision, logSpy.getStockage());
+    }
+
+    @Test
+    public void casLogLevelWarn() {
+        //ETANT DONNE un moteur
+        LogSpy logSpy = new LogSpy(LogInterface.WARN);
+        logSpy.log(LogInterface.INFO, "test");
+        logSpy.log(LogInterface.WARN, "test");
+        logSpy.log(LogInterface.ERROR, "test");
+
+        //ALORS le log a récupéré les bonnes informations
+        String Prevision =
+                "[WARN] " +  logSpy.getTime() + " : test\n"
+              + "[ERROR] " +  logSpy.getTime() + " : test\n";
+        assertEquals(Prevision, logSpy.getStockage());
+    }
+
+    @Test
+    public void casLogLevelError() {
+        //ETANT DONNE un moteur
+        LogSpy logSpy = new LogSpy(LogInterface.ERROR);
+        logSpy.log(LogInterface.INFO, "test");
+        logSpy.log(LogInterface.WARN, "test");
+        logSpy.log(LogInterface.ERROR, "test");
+
+        //ALORS le log a récupéré les bonnes informations
+        String Prevision = "[ERROR] " +  logSpy.getTime() + " : test\n";
+        assertEquals(Prevision, logSpy.getStockage());
+    }
+    //Log
+    // -> Démmarage moteur
+    // [INFO]  liste des lecteurs
+    // -> Exception
+    // [ERROR] message d'exception
+    // -> Tentative accès
+    // [INFO] si ok
+    // [WARN] si ko
+    //3 niveaux de démmarage : ERROR > WARN > INFO
+    // -> ignore les niveaux inférieurs
+
+    //Tests possibles :
+    //Tester log lancement moteur
+    //Tester moteur sans lecteur Exception (assertThrows)
+    //Tester log chaque niveau moteur -> filtré ou non (3 tests)
+    //Tester log moteur lecteur OK [INFO]
+    //Tester log moteur lecteur KO [WARN]
+    //Tester log moteur sans lecteur Exception [ERROR]
 }

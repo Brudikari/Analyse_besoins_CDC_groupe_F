@@ -7,7 +7,7 @@ public class NullLog implements LogInterface{
     }
 
     @Override
-    public void getLogInfos(String infos) {
+    public void log(int level, String infos) {
 
     }
 
