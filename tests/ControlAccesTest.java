@@ -268,13 +268,15 @@ public class ControlAccesTest {
 
     @Test
     public void casLogLevelInfo() {
-        //ETANT DONNE un moteur
+        //ETANT DONNE un log instancié avec un niveau INFO
         LogSpy logSpy = new LogSpy(LogInterface.INFO);
+
+        //QUAND on envoie un enregistrement de chaque type
         logSpy.log(LogInterface.INFO, "test");
         logSpy.log(LogInterface.WARN, "test");
         logSpy.log(LogInterface.ERROR, "test");
 
-        //ALORS le log a récupéré les bonnes informations
+        //ALORS le log a récupéré tous les enregistrements
         String Prevision =
                   "[INFO] " +  logSpy.getTime() + " : test\n"
                 + "[WARN] " +  logSpy.getTime() + " : test\n"
@@ -284,13 +286,15 @@ public class ControlAccesTest {
 
     @Test
     public void casLogLevelWarn() {
-        //ETANT DONNE un moteur
+        //ETANT DONNE un log instancié avec un niveau WARN
         LogSpy logSpy = new LogSpy(LogInterface.WARN);
+
+        //QUAND on envoie un enregistrement de chaque type
         logSpy.log(LogInterface.INFO, "test");
         logSpy.log(LogInterface.WARN, "test");
         logSpy.log(LogInterface.ERROR, "test");
 
-        //ALORS le log a récupéré les bonnes informations
+        //ALORS le log a récupéré uniquement les enregistrements de niveau WARN ou supérieur
         String Prevision =
                 "[WARN] " +  logSpy.getTime() + " : test\n"
               + "[ERROR] " +  logSpy.getTime() + " : test\n";
@@ -299,16 +303,19 @@ public class ControlAccesTest {
 
     @Test
     public void casLogLevelError() {
-        //ETANT DONNE un moteur
+        //ETANT DONNE un log instancié avec un niveau ERROR
         LogSpy logSpy = new LogSpy(LogInterface.ERROR);
+
+        //QUAND on envoie un enregistrement de chaque type
         logSpy.log(LogInterface.INFO, "test");
         logSpy.log(LogInterface.WARN, "test");
         logSpy.log(LogInterface.ERROR, "test");
 
-        //ALORS le log a récupéré les bonnes informations
+        //ALORS le log a récupéré uniquement les enregistrements de type ERROR
         String Prevision = "[ERROR] " +  logSpy.getTime() + " : test\n";
         assertEquals(Prevision, logSpy.getStockage());
     }
+
     //Log
     // -> Démmarage moteur
     // [INFO]  liste des lecteurs
@@ -321,10 +328,10 @@ public class ControlAccesTest {
     // -> ignore les niveaux inférieurs
 
     //Tests possibles :
-    //Tester log lancement moteur
+    // OK Tester log lancement moteur
     //Tester moteur sans lecteur Exception (assertThrows)
-    //Tester log chaque niveau moteur -> filtré ou non (3 tests)
-    //Tester log moteur lecteur OK [INFO]
-    //Tester log moteur lecteur KO [WARN]
+    // OK Tester log chaque niveau moteur -> filtré ou non (3 tests)
+    // OK Tester log moteur lecteur OK [INFO]
+    // OK Tester log moteur lecteur KO [WARN]
     //Tester log moteur sans lecteur Exception [ERROR]
 }

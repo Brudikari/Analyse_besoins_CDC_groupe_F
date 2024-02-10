@@ -24,17 +24,12 @@ public class LogSpy implements LogInterface {
     }
 
     public void log(int level, String infos) {
-        String logLevel = "";
-        switch (level) {
-            case LogInterface.INFO:
-                logLevel = "[INFO]";
-                break;
-            case LogInterface.WARN:
-                logLevel = "[WARN]";
-                break;
-            case LogInterface.ERROR:
-                logLevel = "[ERROR]";
-        }
+        String logLevel = switch (level) {
+            case LogInterface.INFO -> "[INFO]";
+            case LogInterface.WARN -> "[WARN]";
+            case LogInterface.ERROR -> "[ERROR]";
+            default -> "";
+        };
         if(level >= logAcceptationLevel)
             stockage += logLevel + " " + getTime() + " : " + infos + "\n";
     }

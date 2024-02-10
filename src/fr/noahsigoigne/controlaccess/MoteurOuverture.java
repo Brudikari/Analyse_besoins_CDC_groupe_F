@@ -1,7 +1,7 @@
 package fr.noahsigoigne.controlaccess;
 
 public class MoteurOuverture {
-    private LogInterface log;
+    private final LogInterface log;
 
     private String nom;
 
