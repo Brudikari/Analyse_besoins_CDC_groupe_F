@@ -1,8 +1,7 @@
 import fr.noahsigoigne.controlaccess.*;
 import org.junit.Test;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.Assert.*;
 
 
 public class ControlAccesTest {
@@ -314,6 +313,20 @@ public class ControlAccesTest {
         //ALORS le log a récupéré uniquement les enregistrements de type ERROR
         String Prevision = "[ERROR] " +  logSpy.getTime() + " : test\n";
         assertEquals(Prevision, logSpy.getStockage());
+    }
+
+
+
+    @Test
+    public void casMoteurSansLecteurException() {
+        // ETANT DONNE un moteur sans lecteur
+        LogSpy logSpy = new LogSpy();
+        MoteurOuverture moteurOuverture = new MoteurOuverture("moteur_01", logSpy);
+
+        // QUAND on essaie de démarrer le moteur sans lecteur
+        // ALORS une exception LecteurException est levée
+        LecteurException exception = assertThrows(LecteurException.class, moteurOuverture::interrogerLecteur);
+        assertEquals("Lecteur manquant", exception.getMessage());
     }
 
     //Log
