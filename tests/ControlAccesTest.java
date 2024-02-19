@@ -329,6 +329,46 @@ public class ControlAccesTest {
         assertEquals("Lecteur manquant", exception.getMessage());
     }
 
+
+//    @Test
+//    public void casLogMoteurSansLecteurException() {
+//        // ETANT DONNE un moteur sans lecteur
+//        LogSpy logSpy = new LogSpy(LogInterface.ERROR);
+//        MoteurOuverture moteurOuverture = new MoteurOuverture("moteur_01", logSpy);
+//
+//        // QUAND on essaie de démarrer le moteur sans lecteur
+//        // ET qu'une exception LecteurException est levée
+//
+//            LecteurException exception = assertThrows(LecteurException.class, moteurOuverture::interrogerLecteur);
+//            assertEquals("Lecteur manquant", exception.getMessage());
+//
+//            // ALORS le log récupère les bonnes informations
+//            String Prevision = "[ERROR] " +  logSpy.getTime() + " : moteur " + moteurOuverture.getNom() + "Lecteur manquant\n";
+//            assertEquals(Prevision, logSpy.getStockage());
+//
+//    }
+
+    @Test
+    public void casLogMoteurSansLecteurException() {
+        // ETANT DONNE un moteur sans lecteur
+        LogSpy logSpy = new LogSpy(LogInterface.ERROR);
+        MoteurOuverture moteurOuverture = new MoteurOuverture("moteur_01", logSpy);
+
+        try {
+            // QUAND on essaie de démarrer le moteur sans lecteur
+            LecteurException exception = assertThrows(LecteurException.class, moteurOuverture::interrogerLecteur);
+            assertEquals("Lecteur manquant", exception.getMessage());
+
+            // ALORS le log récupère les bonnes informations
+            String Prevision = "[ERROR] " +  logSpy.getTime() + " : moteur " + moteurOuverture.getNom() + "Lecteur manquant\n";
+            assertEquals(Prevision, logSpy.getStockage());
+        } catch (LecteurException exception) {
+            exception.getMessage();
+            fail("Une exception LecteurException a été levée");
+        }
+    }
+
+
     //Log
     // -> Démmarage moteur
     // [INFO]  liste des lecteurs
