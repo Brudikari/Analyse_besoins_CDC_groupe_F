@@ -24,8 +24,10 @@ public class MoteurOuverture {
     }
 
     public void interrogerLecteur(LecteurInterface... lecteurs) throws LecteurException {
-        if(lecteurs.length == 0)
+        if(lecteurs.length == 0) {
+            log.log(log.ERROR, "moteur " + nom + " : Lecteur manquant");
             throw new LecteurException("Lecteur manquant");
+        }
         for(LecteurInterface lecteur : lecteurs ) {
             if (lecteur.aDetecteBadgeCorrect()) {
                 for (PorteInterface porte : lecteur.getPortes()) {
